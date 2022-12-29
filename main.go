@@ -11,5 +11,6 @@ func main() {
 	router.GET("/users", endpoints.GetAllUsers)
 	router.POST("/users", endpoints.AddUser)
 	router.GET("/users/:id", endpoints.GetUserByID)
+	router.DELETE("/users/delete/:id", endpoints.RemoveUser)
 	router.Run("localhost:8080")
 }

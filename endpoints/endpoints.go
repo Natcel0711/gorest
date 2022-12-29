@@ -13,15 +13,34 @@ func GetAllUsers(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, users)
 }
 
+func RemoveUser(c *gin.Context) {
+	id := c.Param("id")
+	for i, u := range users {
+		if strconv.Itoa(u.Id) == id {
+			fmt.Println(users)
+			users = remove(users, i)
+			fmt.Println(users)
+			return
+		}
+	}
+	c.IndentedJSON(http.StatusOK, fmt.Sprintf("User with ID %s was not found", id))
+}
+
+func remove(s []user, i int) []user {
+	s[i] = s[len(s)-1]
+	fmt.Println("S[i]:", s[i], "slenese: ", s[len(s)-1])
+	return s[:len(s)-1]
+}
+
 func GetUserByID(c *gin.Context) {
 	id := c.Param("id")
 	for _, u := range users {
-		if strconv.Itoa(u.Id) != id {
-			c.IndentedJSON(http.StatusOK, fmt.Sprintf("User with ID %s was not found", id))
+		if strconv.Itoa(u.Id) == id {
+			c.IndentedJSON(http.StatusOK, u)
 			return
 		}
-		c.IndentedJSON(http.StatusOK, u)
 	}
+	c.IndentedJSON(http.StatusOK, fmt.Sprintf("User with ID %s was not found", id))
 }
 
 func AddUser(c *gin.Context) {
